@@ -6,17 +6,8 @@ open canopy.runner.classic
 open types
 open configuration
 open reporters
+open Retry
 
-let rec retry times fn = 
-    if times > 1 then
-        try
-            fn()
-        with 
-        | _ -> 
-            Threading.Thread.Sleep 1000
-            retry (times - 1) fn
-    else
-        fn()
 
 [<EntryPoint>]
 let main _ =
@@ -45,7 +36,7 @@ let main _ =
 
     let browserUrl = "" //"http://testbrowser:4444/wd/hub/" 
     let browser = if browserUrl.Length>0 then Remote(browserUrl, capability) else debugBrowser    
-    retry 30 (fun() -> start browser)
+    retry 1000 30 (fun() -> start browser)
   
     SignupTests.all()
 

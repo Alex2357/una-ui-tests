@@ -6,10 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Helpers/Retry.fs" />
+    <Compile Include="Helpers/EmailCatcher.fs" />
     <Compile Include="Common.fs" />
     <Compile Include="CanopyExtensions.fs" />
     <Compile Include="CompositeControls/Header.fs" />
     <Compile Include="CompositeControls/Signup.fs" />
+    <Compile Include="CompositeControls/ProfileHome.fs" />
     <Compile Include="Pages.fs" />
     <Compile Include="Tests/SignupTests.fs" />
     <Compile Include="Program.fs" />
