@@ -6,6 +6,7 @@ open MailKit.Search
 open MailKit
 open Retry
 open System.Linq
+open MailKit.Security
 
 type ImapDetails={ Host:string; Port: int; UserName: string; Password:string}
 
@@ -17,7 +18,10 @@ let createEmailCatcher imapDetails =
 let getEmail emailCatcher timeoutSeconds subjectContains toContains = 
     use client = new ImapClient()   
     let imap = emailCatcher.ImapDetails;
-    client.Connect(imap.Host, imap.Port)
+    client.ServerCertificateValidationCallback <- fun s c h e -> true;
+    client.Connect(imap.Host, imap.Port, SecureSocketOptions.Auto)
+    //if fails on next line goto gmail settings, open tab "Forwarding and POP/IMAP" and enable IMAP
+    //for some reason fails even after enabled with error: "Invalid credentials (Failure)"
     client.Authenticate (imap.UserName, imap.Password);
   
     let query = SearchQuery.DeliveredAfter(emailCatcher.StartDate)
