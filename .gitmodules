@@ -1,0 +1,3 @@
+[submodule "submodules/canopy"]
+	path = submodules/canopy
+	url = https://github.com/Alex2357/canopy.git
