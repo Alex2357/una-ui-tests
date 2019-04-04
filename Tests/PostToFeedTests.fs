@@ -23,7 +23,8 @@ let all postToFeedFrom =
     | PostToFeedFromProfile -> context "PostToFeedFromProfileTests"
     | PostToFeedFromAccount -> context "PostToFeedFromAccountTests"
 
-    once (fun _ -> 
+    before (fun _ -> 
+        raise (System.Exception("bla-bla"))
         Login.userLogin defaultAdmin
 
         let mutable reportName = ""
@@ -40,7 +41,7 @@ let all postToFeedFrom =
         createAndWriteAccessibilityReport reportName
     )
 
-    lastly ( fun _ -> 
+    after ( fun _ -> 
         match postToFeedFrom with
         | PostToFeedFromProfile -> 
             deleteProfile()                
@@ -98,7 +99,7 @@ let all postToFeedFrom =
 
 
 
-    tn("Click Add and Delete link -> Deletes added link") &&& fun _ ->        
+    tn("Click Add and Delete link -> Deletes added link") &&&& fun _ ->        
         click _addLinkButton
         _addLinkTextBox << "https://ci.una.io/test/"
         click _addLinkSubmitButton 
