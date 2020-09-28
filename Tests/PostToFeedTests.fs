@@ -19,8 +19,9 @@ type PostToFeedFrom =
 
 [<Parallelizable(ParallelScope.Children)>]
 
-type PostToFeedTests() =
-    let postToFeedFrom = "PostToFeedFromProfile"
+    before (fun _ -> 
+        raise (System.Exception("bla-bla"))
+        Login.userLogin defaultAdmin
 
 
     
@@ -39,8 +40,7 @@ type PostToFeedTests() =
         //Here we run accessibility tests in both(PostToFeedFromAccount,PostToFeedFromProfile) cases
         createAndWriteAccessibilityReport reportName
 
-    [<TearDown>]
-    member this.TearDown()=
+    after ( fun _ -> 
         match postToFeedFrom with
         | "PostToFeedFromProfile" -> 
             deleteProfile()                
@@ -109,11 +109,7 @@ type PostToFeedTests() =
 
 
 
-    [<UseDriver>]
-    [<Test>]
-    [<Category("Positive")>] 
-    member this.ClickAddAndDeleteLink_DeletesMessageWithLink ()=
-        setup user_karen
+    tn("Click Add and Delete link -> Deletes added link") &&&& fun _ ->        
         click _addLinkButton
         _addLinkTextBox << "https://ci.una.io/test/"
         click _addLinkSubmitButton 

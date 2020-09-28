@@ -19,10 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="canopy" Version="2.1.0" />
-    <PackageReference Include="MailKit" Version="2.1.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="Unquote" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="submodules\canopy\src\canopy\canopy.fsproj" />
   </ItemGroup>
 
 </Project>
