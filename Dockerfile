@@ -1,14 +1,11 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
-
-RUN apt-get update && apt-get install -y libc6-dev libgdiplus
+FROM microsoft/dotnet:2.2-sdk AS build-env
 
 COPY / ./tests
 
-RUN sed -i 's/let browserUrl = /let browserUrl = "http:\/\/hub:4444\/wd\/hub\/" \/\/ /g' tests/Tests/TestsSetup.fs && \
-    sed -i 's/setDriverFactory /setDriverFactory createRemoteDriver \/\/ /g' tests/Tests/TestsSetup.fs 
-   
+RUN sed -i 's/let browserUrl = /let browserUrl = "http:\/\/testbrowser:4444\/wd\/hub\/" \/\/ /g' tests/Program.fs && \
+    sed -i 's/.\/results.xml/\/tests\/TestResults\/results.xml/g' tests/Program.fs && \
+    dotnet build tests/una-ui-tests.fsproj
 
 VOLUME /tests/TestResults
 
-ENTRYPOINT ["dotnet", "test","--logger","trx;LogFileName=result.trx","/tests/una-ui-tests.fsproj","--filter"]
-CMD ["Name!=NotExistingTestNameToRunAllTests"]
+ENTRYPOINT ["dotnet", "tests/bin/Debug/netcoreapp2.2/una-ui-tests.dll"]
